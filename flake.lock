@@ -1,57 +1,175 @@
 {
   "nodes": {
-    "gnulib-src": {
+    "chipwhisperer-jupyter-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1588070119,
-        "narHash": "sha256-gMIWbMSKisS5w6QxKFfN1IJHPHxZw9h5upzxpada+1c=",
-        "ref": "master",
-        "rev": "5ec4d920e4acb45225320c3df9ae32fdff928413",
-        "revCount": 20684,
-        "type": "git",
-        "url": "https://git.savannah.gnu.org/git/gnulib.git"
+        "lastModified": 1657673304,
+        "narHash": "sha256-7DvSmqP5bS9DB4zm8yXGb7yzS5KtpXM9eIerjoE0C6w=",
+        "owner": "newaetech",
+        "repo": "chipwhisperer-jupyter",
+        "rev": "dc348287bf2ce30ec2bb3688e88f04276d6312d5",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "https://git.savannah.gnu.org/git/gnulib.git"
+        "owner": "newaetech",
+        "repo": "chipwhisperer-jupyter",
+        "type": "github"
       }
     },
-    "hello-src": {
+    "chipwhisperer-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1549746003,
-        "narHash": "sha256-7losVbaLgy9pjL6GoOrZAK6O6nCXm3pddo03UZDjxUc=",
-        "ref": "master",
-        "rev": "0cce403f478bd0a4a60d0b8566c67d3a72498008",
-        "revCount": 454,
-        "type": "git",
-        "url": "https://git.savannah.gnu.org/git/hello.git"
+        "lastModified": 1658346069,
+        "narHash": "sha256-tLuokRPF8HF5CNas+T62EuW9XWT8gwP4jU6WkMdJ2xI=",
+        "owner": "S-Vaes",
+        "repo": "chipwhisperer-fork",
+        "rev": "90732b067a43f27d587212b325f4b1efb810d128",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "https://git.savannah.gnu.org/git/hello.git"
+        "owner": "S-Vaes",
+        "repo": "chipwhisperer-fork",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1656928814,
+        "narHash": "sha256-RIFfgBuKz6Hp89yRr7+NR5tzIAbn52h8vT6vXkYjZoM=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "7e2a3b3dfd9af950a856d66b0a7d01e3c18aa249",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1603528673,
-        "narHash": "sha256-iFrxF9GMes1jH7v8qjep1BsQYEq/admkEv/gJoqQsHo=",
+        "lastModified": 1658321858,
+        "narHash": "sha256-2f5NzHbi1NLSYnDg6cRu25B+XRxqngicvggg+0GgKHI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "95d26c9a9f2a102e25cf318a648de44537f42e09",
+        "rev": "26fe7618c7efbbfe28db9a52a21fb87e67ebaf06",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixos-20.09",
+        "ref": "nixos-22.05",
         "type": "indirect"
+      }
+    },
+    "nptyping-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1656253739,
+        "narHash": "sha256-7nUExWuPLhXFrcm2yfId9OZBkD1tRMlmxhqCTtj99Lk=",
+        "owner": "ramonhagenaars",
+        "repo": "nptyping",
+        "rev": "260da2696fbf9172658d3c4363bfb50478b9068b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ramonhagenaars",
+        "repo": "nptyping",
+        "type": "github"
+      }
+    },
+    "pyright-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1658329196,
+        "narHash": "sha256-aXdAU+Ihe54fQ0mDT8YxFZ3oMwFQM5CRN2DFgAYhXl4=",
+        "owner": "RobertCraigie",
+        "repo": "pyright-python",
+        "rev": "6adecdd3ecf61c8fe5fa87df56ca278f94c0f14f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RobertCraigie",
+        "repo": "pyright-python",
+        "type": "github"
       }
     },
     "root": {
       "inputs": {
-        "gnulib-src": "gnulib-src",
-        "hello-src": "hello-src",
-        "nixpkgs": "nixpkgs"
+        "chipwhisperer-jupyter-src": "chipwhisperer-jupyter-src",
+        "chipwhisperer-src": "chipwhisperer-src",
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs",
+        "nptyping-src": "nptyping-src",
+        "pyright-src": "pyright-src",
+        "sphinxcontrib-autodoc-typehints-src": "sphinxcontrib-autodoc-typehints-src",
+        "sphinxcontrib-images-src": "sphinxcontrib-images-src",
+        "sphobjinv-src": "sphobjinv-src",
+        "stdio-mgr-src": "stdio-mgr-src"
+      }
+    },
+    "sphinxcontrib-autodoc-typehints-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1657563936,
+        "narHash": "sha256-0TTcNmCUJE9kENwRRqGes6nBItq1LIhgD45Y1VPdPwc=",
+        "owner": "tox-dev",
+        "repo": "sphinx-autodoc-typehints",
+        "rev": "e0daa14b9d169bd5738e18b401c39a07ac5964f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tox-dev",
+        "repo": "sphinx-autodoc-typehints",
+        "type": "github"
+      }
+    },
+    "sphinxcontrib-images-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1628485095,
+        "narHash": "sha256-a02OcjuBX8pEUNE3wMpKvuLEQQ/R8ke2ucRF7+0hCQI=",
+        "owner": "sphinx-contrib",
+        "repo": "images",
+        "rev": "b5747fd3b66a34a8c8c1cee4af4baa8e72286849",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sphinx-contrib",
+        "repo": "images",
+        "type": "github"
+      }
+    },
+    "sphobjinv-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1657673865,
+        "narHash": "sha256-Z+Y6Z9nWXyzavgkU4p9OSyVBCMdnRaxsxfwCoz0ZCXU=",
+        "owner": "bskinn",
+        "repo": "sphobjinv",
+        "rev": "7d21f6342702875da87392f2095ee546085ec97a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bskinn",
+        "repo": "sphobjinv",
+        "type": "github"
+      }
+    },
+    "stdio-mgr-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1568642666,
+        "narHash": "sha256-z4xGehuuWKha8SC//PLrF2HnGRziRXKBTfy850HqFjI=",
+        "owner": "bskinn",
+        "repo": "stdio-mgr",
+        "rev": "9bf5a93d4621a3c1973c7ac16b257842e0c01aa0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bskinn",
+        "repo": "stdio-mgr",
+        "type": "github"
       }
     }
   },
