@@ -1,4 +1,4 @@
-{ pkgs, isrc, iversion }:
+{ pkgs, isrc, iversion, pyright, stdio-mgr }:
 with pkgs; python3.pkgs.buildPythonPackage rec {
   version = iversion;
   pname = "nptyping";

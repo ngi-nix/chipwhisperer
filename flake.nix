@@ -70,7 +70,9 @@
 
                     nptyping = pkgs.callPackage ./pkgs/nptyping { pkgs = pkgs;
                       isrc = nptyping-src;
-                      iversion = versions.nptyping; };
+                      iversion = versions.nptyping;
+                      pyright = pyright;
+                      stdio-mgr = stdio-mgr; };
 
                     stdio-mgr = pkgs.callPackage ./pkgs/stdio-mgr { pkgs = pkgs;
                       isrc = stdio-mgr-src;
@@ -91,7 +93,9 @@
 
                     sphinx-autodoc-typehints = pkgs.callPackage ./pkgs/sphinx-autodoc-typehints { pkgs = pkgs;
                       isrc = sphinx-autodoc-typehints-src;
-                      iversion = versions.sphinx-autodoc-typehints; };
+                      iversion = versions.sphinx-autodoc-typehints;
+                      sphobjinv = sphobjinv;
+                      nptyping = nptyping; };
 
                     chipwhisperer = pkgs.callPackage ./pkgs/chipwhisperer { pkgs = pkgs;
                       isrc = chipwhisperer-src;

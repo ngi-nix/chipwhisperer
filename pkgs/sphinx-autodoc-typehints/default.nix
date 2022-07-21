@@ -1,4 +1,4 @@
-{ pkgs, isrc, iversion }:
+{ pkgs, isrc, iversion, sphobjinv, nptyping }:
 with pkgs; python3.pkgs.buildPythonPackage rec {
   version = iversion;
   pname = "sphinx-autodoc-typehints";
