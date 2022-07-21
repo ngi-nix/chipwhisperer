@@ -21,7 +21,7 @@
       url = github:sphinx-contrib/images;
       flake = false;
     };
-    sphinxcontrib-autodoc-typehints-src = {
+    sphinx-autodoc-typehints-src = {
       url = github:tox-dev/sphinx-autodoc-typehints;
       flake = false;
     };
@@ -45,11 +45,11 @@
   outputs = { self, nixpkgs, flake-utils,
               chipwhisperer-src, chipwhisperer-jupyter-src,
               sphinxcontrib-images-src,
-              sphinxcontrib-autodoc-typehints-src,
+              sphinx-autodoc-typehints-src,
               sphobjinv-src,
               nptyping-src,
               stdio-mgr-src,
-              pyright-src}:
+              pyright-src}@inputs:
                 flake-utils.lib.eachDefaultSystem (system:
                   let
                     pkgs = import nixpkgs {
@@ -59,232 +59,45 @@
 
                     # Generate a user-friendly version numer.
                     # version = builtins.substring 0 8 chipwhisperer-src.lastModifiedDate;
-                    chipwhisperer-version = builtins.substring 0 8 chipwhisperer-src.lastModifiedDate;
-                    sphinxcontrib-images-version = builtins.substring 0 8 sphinxcontrib-images-src.lastModifiedDate;
-                    sphinxcontrib-autodoc-typehints-version = builtins.substring 0 8 sphinxcontrib-autodoc-typehints-src.lastModifiedDate;
-                    sphobjinv-version = builtins.substring 0 8 sphobjinv-src.lastModifiedDate;
-                    nptyping-version = builtins.substring 0 8 nptyping-src.lastModifiedDate;
-                    stdio-mgr-version = builtins.substring 0 8 stdio-mgr-src.lastModifiedDate;
-                    pyright-version = builtins.substring 0 8 pyright-src.lastModifiedDate;
+                    versions =
+                      let
+                        generateVersion = builtins.substring 0 8;
+                      in
+                        nixpkgs.lib.genAttrs
+                          [ "chipwhisperer" "sphinxcontrib-images" "sphinx-autodoc-typehints"
+                            "sphobjinv" "nptyping" "stdio-mgr" "pyright"]
+                          (n: generateVersion inputs."${n}-src".lastModifiedDate);
 
-                    # --- pyright ---
-                    pyright = with pkgs; python3.pkgs.buildPythonPackage rec {
-                      version = pyright-version;
-                      pname = "pyright";
-                      src = pyright-src;
-                      doCheck = false;
+                    nptyping = pkgs.callPackage ./pkgs/nptyping { pkgs = pkgs;
+                      isrc = nptyping-src;
+                      iversion = versions.nptyping; };
 
-                      checkPhase = ''
-                    pytest
-                    '';
+                    stdio-mgr = pkgs.callPackage ./pkgs/stdio-mgr { pkgs = pkgs;
+                      isrc = stdio-mgr-src;
+                      iversion = versions.stdio-mgr; };
 
-                      checkInputs = with python3Packages; [ pytest pytest-subprocess ];
-                      
-                      propagatedBuildInputs = with python3Packages; [
-                        nodeenv
-                        typing-extensions
-                      ];
+                    pyright = pkgs.callPackage ./pkgs/pyright { pkgs = pkgs;
+                      isrc = pyright-src;
+                      iversion = versions.pyright; };
 
-                      meta = with lib; {
-                        description = "Pyright for Python is a Python command-line wrapper over pyright, a static type checker for Python.";
-                        homepage = https://github.com/RobertCraigie/pyright-python;
-                        license = licenses.mit;
-                      };
-                    };
-                    # ---
+                    sphobjinv = pkgs.callPackage ./pkgs/sphobjinv { pkgs = pkgs;
+                      isrc = sphobjinv-src;
+                      iversion = versions.sphobjinv; };
 
-                    # --- stdio-mgr ---
-                    stdio-mgr = with pkgs; python3.pkgs.buildPythonPackage rec {
-                      version = stdio-mgr-version;
-                      pname = "stdio-mgr";
-                      src = stdio-mgr-src;
-                      doCheck = true;
+                    sphinxcontrib-images = pkgs.callPackage ./pkgs/sphinxcontrib-images { pkgs = pkgs;
+                      isrc = sphinxcontrib-images-src;
+                      iversion = versions.sphinxcontrib-images;
+                      sphobjinv = sphobjinv; };
 
-                      checkPhase = ''
-                    pytest
-                    '';
+                    sphinx-autodoc-typehints = pkgs.callPackage ./pkgs/sphinx-autodoc-typehints { pkgs = pkgs;
+                      isrc = sphinx-autodoc-typehints-src;
+                      iversion = versions.sphinx-autodoc-typehints; };
 
-                      checkInputs = with python3Packages; [ pytest ];
-                      
-                      propagatedBuildInputs = with python3Packages; [
-                        numpy
-                        typing-extensions
-                      ];
-
-                      meta = with lib; {
-                        description = "Context manager for mocking/wrapping stdin/stdout/stderr.";
-                        homepage = https://github.com/bskinn/stdio-mgr;
-                        license = licenses.mit;
-                      };
-                    };
-                    # ---
-
-                    # --- nptyping ---
-                    nptyping = with pkgs; python3.pkgs.buildPythonPackage rec {
-                      version = nptyping-version;
-                      pname = "nptyping";
-                      src = nptyping-src;
-                      doCheck = false;
-
-                      checkPhase = ''
-                    pytest
-                    '';
-                      
-                      checkInputs = with python3Packages; [ pytest typeguard pyright stdio-mgr mypy feedparser beartype ];
-                      
-                      propagatedBuildInputs = with python3Packages; [
-                        numpy
-                        typing-extensions
-                      ];
-
-                      meta = with lib; {
-                        description = "Extensive dynamic type checks for dtypes and shapes of arrays.";
-                        homepage = https://github.com/ramonhagenaars/nptyping;
-                        license = licenses.mit;
-                      };
-                    };
-                    # ---
-
-                    # --- sphobjinv ---
-                    sphobjinv = with pkgs; python3.pkgs.buildPythonPackage rec {
-                      version = sphobjinv-version;
-                      pname = "sphobjinv";
-                      src = sphobjinv-src;
-                      doCheck = false;
-
-                      checkPhase = ''
-                    pytest
-                    '';
-
-                      checkInputs = with python3Packages; [ pytest stdio-mgr dictdiffer ];
-                      
-                      propagatedBuildInputs = with python3Packages; [
-                        sphinx
-                        jsonschema
-                      ];
-
-                      meta = with lib; {
-                        description = "Manipulate and inspect Sphinx objects.inv files.";
-                        homepage = https://github.com/bskinn/sphobjinv;
-                        license = licenses.mit;
-                      };
-                    };
-                    # ---
-
-                    # --- sphinxcontrib-images ---
-                    sphinxcontrib-images = with pkgs; python3.pkgs.buildPythonPackage rec {
-                      version = sphinxcontrib-images-version;
-                      pname = "sphinxcontrib-images";
-                      src = sphinxcontrib-images-src;
-                      doCheck = false;
-
-                      checkPhase = ''
-                    pytest
-                    '';
-
-                      checkInputs = with python3Packages; [ pytest ];
-                      
-                      propagatedBuildInputs = with python3Packages; [
-                        sphobjinv
-                        sphinx
-                      ];
-
-                      meta = with lib; {
-                        description = "Easy thumbnails in Sphinx documentation (focused on HTML).";
-                        homepage = https://github.com/sphinx-contrib/images;
-                        license = licenses.asl20;
-                      };
-                    };
-                    # ---
-
-                    # --- sphinx-autodoc-typehints ---
-                    sphinx-autodoc-typehints = with pkgs; python3.pkgs.buildPythonPackage rec {
-                      version = sphinxcontrib-autodoc-typehints-version;
-                      pname = "sphinx-autodoc-typehints";
-                      src = sphinxcontrib-autodoc-typehints-src;
-                      doCheck = false;
-
-                      checkPhase = ''
-                    pytest
-                    '';
-                      
-                      checkInputs = with python3Packages; [ pytest sphobjinv nptyping ];
-
-                      propagatedBuildInputs = with python3Packages; [
-                        sphinx
-                      ];
-                      
-                      meta = with lib; {
-                        description = "This extension allows you to use Python 3 annotations for documenting acceptable argument types and return value types of functions.";
-                        homepage = https://github.com/tox-dev/sphinx-autodoc-typehints;
-                        license = licenses.mit;
-                      };
-                    };
-                    # ---
-
-                    # --- chipwhisperer ---
-                    chipwhisperer = with pkgs; python3.pkgs.buildPythonPackage rec {
-                      version = chipwhisperer-version;
-                      name = "chipwhisperer";
-                      pname = "chipwhisperer";
-                      src = chipwhisperer-src;
-                      doCheck = false;
-
-                      checkInputs = with python3Packages; [ pytest ];
-                      checkPhase = ''
-                    export HOME="$(mktemp -d)"
-                    python3 -m pytest ./tests/
-                    '';
-
-                      # buildPhase = ''
-                      # python3 setup.py develop
-                      # '';
-
-                      preInstallPhase = ''
-                    mkdir -p $out/lib/udev/rules.d
-                    cp hardware/50-newae.rules $out/lib/udev/rules.d
-                    '';
-                      
-                      # installPhase = ''
-                      # mkdir -p $out/lib/udev/rules.d
-                      # cp hardware/50-newae.rules $out/lib/udev/rules.d
-                      # pip install *.whl
-                      # '';
-                      
-                      buildInputs = [
-                        pkgs.libusb1
-                      ];
-                      
-                      propagatedBuildInputs = with python3Packages; [
-                        libusb1
-                        configobj
-                        iso8601
-                        numpy
-                        pycryptodome
-                        pyparsing
-                        python-dateutil
-                        pytz
-                        pyusb
-                        scipy
-                        sphinx
-                        sphinx_rtd_theme
-                        sphinxcontrib-images
-                        pyserial
-                        fastdtw
-                        cython
-                        pypandoc
-                        tqdm
-                        ipython #needed for rtd
-                        ecpy
-                        sphinx-autodoc-typehints
-                      ];
-
-                      meta = with lib; {
-                        description = "Open source toolchain dedicated to hardware security research.";
-                        homepage = https://github.com/newaetech/chipwhisperer;
-                        license = licenses.gpl2Plus;
-                      };
-                    };
+                    chipwhisperer = pkgs.callPackage ./pkgs/chipwhisperer { pkgs = pkgs;
+                      isrc = chipwhisperer-src;
+                      iversion = versions.chipwhisperer;
+                      sphinxcontrib-images = sphinxcontrib-images;
+                      sphinx-autodoc-typehints = sphinx-autodoc-typehints; };
                     
                   pythonEnv = pkgs.python39.withPackages (ps: [
                     chipwhisperer

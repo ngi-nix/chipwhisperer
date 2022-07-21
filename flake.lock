@@ -102,13 +102,13 @@
         "nixpkgs": "nixpkgs",
         "nptyping-src": "nptyping-src",
         "pyright-src": "pyright-src",
-        "sphinxcontrib-autodoc-typehints-src": "sphinxcontrib-autodoc-typehints-src",
+        "sphinx-autodoc-typehints-src": "sphinx-autodoc-typehints-src",
         "sphinxcontrib-images-src": "sphinxcontrib-images-src",
         "sphobjinv-src": "sphobjinv-src",
         "stdio-mgr-src": "stdio-mgr-src"
       }
     },
-    "sphinxcontrib-autodoc-typehints-src": {
+    "sphinx-autodoc-typehints-src": {
       "flake": false,
       "locked": {
         "lastModified": 1657563936,
