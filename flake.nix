@@ -293,7 +293,6 @@
                   # The default package for 'nix build'. This makes sense if the
                   # flake provides only one package or there is a clear "main"
                   # Provide some binary packages for selected system types.
-                  # packages.chipwhisperer = chipwhisperer;
                   packages = flake-utils.lib.flattenTree {
                     default = chipwhisperer;
                     chipwhisperer = chipwhisperer;
@@ -306,7 +305,6 @@
                   };
 
                   devShells.default = pkgs.mkShell {
-                    # packages = [ pythonEnv ];
                     buildInputs = [
                       (pkgs.python39.withPackages (p: with p; [ chipwhisperer ]))
                     ];
