@@ -1,0 +1,3 @@
+* Flake for ChipWhisperer
+
+This flake packages [[https://github.com/newaetech/chipwhisperer][ChipWhisperer]]. An open source toolchain dedicated to hardware security research.
