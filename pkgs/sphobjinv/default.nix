@@ -1,8 +1,16 @@
-{ pkgs, isrc, iversion }:
-with pkgs; python3.pkgs.buildPythonPackage rec {
-  version = iversion;
+{ fetchFromGitHub,
+  python3,
+  python3Packages,
+  lib }:
+python3.pkgs.buildPythonPackage rec {
+  version = "0.0.1";
   pname = "sphobjinv";
-  src = isrc;
+  src = fetchFromGitHub {
+    owner = "bskinn";
+    repo = "sphobjinv";
+    rev = "7d21f6342702875da87392f2095ee546085ec97a";
+    sha256 = "0x8934ys60pwqmnaqib7qw4429ab9sgy4509pvd2qpynv5kkmrk7";
+  };
   doCheck = false;
 
   checkPhase = ''

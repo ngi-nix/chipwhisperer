@@ -1,8 +1,17 @@
-{ pkgs, isrc, iversion, pyright, stdio-mgr }:
-with pkgs; python3.pkgs.buildPythonPackage rec {
-  version = iversion;
+{ fetchFromGitHub,
+  python3,
+  python3Packages,
+  lib,
+  pyright, stdio-mgr }:
+python3.pkgs.buildPythonPackage rec {
+  version = "0.0.1";
   pname = "nptyping";
-  src = isrc;
+  src = fetchFromGitHub {
+    owner = "ramonhagenaars";
+    repo = "nptyping";
+    rev = "260da2696fbf9172658d3c4363bfb50478b9068b";
+    sha256 = "1fglzpc4x0hsqrkcji3d7n843rpl3prckdn9mp2iablgdg2h8xgf";
+  };
   doCheck = false;
 
   checkPhase = ''

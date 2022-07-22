@@ -1,13 +1,22 @@
-{ pkgs, isrc, iversion, sphobjinv }:
-with pkgs; python3.pkgs.buildPythonPackage rec {
-  version = iversion;
+{ fetchFromGitHub,
+  python3,
+  python3Packages,
+  lib,
+  sphobjinv }:
+python3.pkgs.buildPythonPackage rec {
+  version = "0.0.1";
   pname = "sphinxcontrib-images";
-  src = isrc;
+  src = fetchFromGitHub {
+    owner = "sphinx-contrib";
+    repo = "images";
+    rev = "b5747fd3b66a34a8c8c1cee4af4baa8e72286849";
+    sha256 = "00h947nyyif4p6v4gwni1x0w9qmy9b5c0dyia12clpw17dr8wkbb";
+  };
   doCheck = false;
 
   checkPhase = ''
-                    pytest
-                    '';
+               pytest
+               '';
 
   checkInputs = with python3Packages; [ pytest ];
   

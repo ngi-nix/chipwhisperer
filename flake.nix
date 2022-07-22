@@ -9,7 +9,8 @@
     # Upstream source tree(s).
     chipwhisperer-src = {
       # TODO: Change to "github:newaetech/chipwhisperer" when PR is resolved
-      url = github:S-Vaes/chipwhisperer-fork;
+      # url = github:S-Vaes/chipwhisperer-fork;
+      url = github:newaetech/chipwhisperer;
       flake = false;
     };
     chipwhisperer-jupyter-src = {
@@ -58,7 +59,6 @@
                     python = "python39";
 
                     # Generate a user-friendly version numer.
-                    # version = builtins.substring 0 8 chipwhisperer-src.lastModifiedDate;
                     versions =
                       let
                         generateVersion = builtins.substring 0 8;
@@ -67,41 +67,50 @@
                           [ "chipwhisperer" "sphinxcontrib-images" "sphinx-autodoc-typehints"
                             "sphobjinv" "nptyping" "stdio-mgr" "pyright"]
                           (n: generateVersion inputs."${n}-src".lastModifiedDate);
+                    
+                    # Define the packages
+                    stdio-mgr = with pkgs; (callPackage ./pkgs/stdio-mgr { }).overridePythonAttrs (oldAttrs: rec {
+                      src = stdio-mgr-src;
+                      version = versions.stdio-mgr;
+                    });
 
-                    nptyping = pkgs.callPackage ./pkgs/nptyping { pkgs = pkgs;
-                      isrc = nptyping-src;
-                      iversion = versions.nptyping;
+                    pyright = with pkgs; (callPackage ./pkgs/pyright { }).overridePythonAttrs (oldAttrs : rec {
+                      src = pyright-src;
+                      version = versions.pyright;
+                    });
+
+                    nptyping = with pkgs; (callPackage ./pkgs/nptyping {
                       pyright = pyright;
-                      stdio-mgr = stdio-mgr; };
+                      stdio-mgr = stdio-mgr;}).overridePythonAttrs (oldAttrs : rec {
+                        src = nptyping-src;
+                        version = versions.nptyping;
+                      });
 
-                    stdio-mgr = pkgs.callPackage ./pkgs/stdio-mgr { pkgs = pkgs;
-                      isrc = stdio-mgr-src;
-                      iversion = versions.stdio-mgr; };
+                    sphobjinv = with pkgs; (callPackage ./pkgs/sphobjinv { }).overridePythonAttrs (oldAttrs : rec {
+                      src = sphobjinv-src;
+                      version = versions.sphobjinv;
+                    });
 
-                    pyright = pkgs.callPackage ./pkgs/pyright { pkgs = pkgs;
-                      isrc = pyright-src;
-                      iversion = versions.pyright; };
+                    sphinxcontrib-images = with pkgs; (callPackage ./pkgs/sphinxcontrib-images {
+                      sphobjinv = sphobjinv;}).overridePythonAttrs (oldAttrs : rec {
+                        src = sphinxcontrib-images-src;
+                        version = versions.sphinxcontrib-images;
+                      });
 
-                    sphobjinv = pkgs.callPackage ./pkgs/sphobjinv { pkgs = pkgs;
-                      isrc = sphobjinv-src;
-                      iversion = versions.sphobjinv; };
-
-                    sphinxcontrib-images = pkgs.callPackage ./pkgs/sphinxcontrib-images { pkgs = pkgs;
-                      isrc = sphinxcontrib-images-src;
-                      iversion = versions.sphinxcontrib-images;
-                      sphobjinv = sphobjinv; };
-
-                    sphinx-autodoc-typehints = pkgs.callPackage ./pkgs/sphinx-autodoc-typehints { pkgs = pkgs;
-                      isrc = sphinx-autodoc-typehints-src;
-                      iversion = versions.sphinx-autodoc-typehints;
+                    sphinx-autodoc-typehints = with pkgs; (callPackage ./pkgs/sphinx-autodoc-typehints {
                       sphobjinv = sphobjinv;
-                      nptyping = nptyping; };
+                      nptyping = nptyping;}).overridePythonAttrs (oldAttrs : rec {
+                        src = sphinx-autodoc-typehints-src;
+                        version = versions.sphinx-autodoc-typehints;
+                      });
 
-                    chipwhisperer = pkgs.callPackage ./pkgs/chipwhisperer { pkgs = pkgs;
-                      isrc = chipwhisperer-src;
-                      iversion = versions.chipwhisperer;
+                    chipwhisperer = with pkgs; (callPackage ./pkgs/chipwhisperer {
+                      libusb = libusb1;
                       sphinxcontrib-images = sphinxcontrib-images;
-                      sphinx-autodoc-typehints = sphinx-autodoc-typehints; };
+                      sphinx-autodoc-typehints = sphinx-autodoc-typehints;}).overridePythonAttrs (oldAttrs: rec {
+                        src = chipwhisperer-src;
+                        version = versions.chipwhisperer;
+                      });
                     
                   pythonEnv = pkgs.python39.withPackages (ps: [
                     chipwhisperer
@@ -121,15 +130,20 @@
                     pyright = pyright;
                   };
 
+                  # Default shell
                   devShells.default = pkgs.mkShell {
-                    buildInputs = [
-                      (pkgs.python39.withPackages (p: with p; [ chipwhisperer ]))
-                    ];
+                      buildInputs = [
+                        chipwhisperer
+                      ];
+                      # (pkgs.python39.withPackages (p: with p; [ chipwhisperer ]))
                   };
                 }) // {
                   overlays = {
                     default = final: prev: {
-                      inherit (self.packages) chipwhisperer;
+                      inherit (self.packages) default;
+                    };
+                    all = final: prev: {
+                      inherit (self.packages) chipwhisperer sphinx-autodoc-typehints sphinxcontrib-images sphobjinv nptyping pyright stdio-mgr;
                     };
                   };
                 };

@@ -1,16 +1,26 @@
-{ pkgs, isrc, iversion, sphinxcontrib-images, sphinx-autodoc-typehints }:
-with pkgs; python3.pkgs.buildPythonPackage rec {
-  version = iversion;
-  name = "chipwhisperer";
+{ libusb,
+  fetchFromGitHub,
+  python3,
+  python3Packages,
+  lib,
+  sphinxcontrib-images,
+  sphinx-autodoc-typehints }:
+python3.pkgs.buildPythonPackage rec {
+  version = "0.0.1";
   pname = "chipwhisperer";
-  src = isrc;
+  src = fetchFromGitHub {
+    owner = "newaetech";
+    repo = "chipwhisperer";
+    rev = "4bf6a266d717ad27cfef16065604b663dd6c2aef";
+    sha256 = "1mnbw2crrj34bba4kadxmd5iqrjqyfr90hgd9fkwsafdzy53dmjh";
+  };
   doCheck = false;
 
   checkInputs = with python3Packages; [ pytest ];
   checkPhase = ''
-                    export HOME="$(mktemp -d)"
-                    python3 -m pytest ./tests/
-                    '';
+               export HOME="$(mktemp -d)"
+               python3 -m pytest ./tests/
+               '';
 
   # buildPhase = ''
   # python3 setup.py develop
@@ -28,7 +38,7 @@ with pkgs; python3.pkgs.buildPythonPackage rec {
   # '';
   
   buildInputs = [
-    pkgs.libusb1
+    libusb
   ];
   
   propagatedBuildInputs = with python3Packages; [
