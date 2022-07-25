@@ -1,11 +1,8 @@
-{ fetchFromGitHub,
-  python3,
-  python3Packages,
-  lib }:
-python3.pkgs.buildPythonPackage rec {
+{ pkgs }:
+pkgs.python3.pkgs.buildPythonPackage rec {
   version = "0.0.1";
   pname = "sphobjinv";
-  src = fetchFromGitHub {
+  src = pkgs.fetchFromGitHub {
     owner = "bskinn";
     repo = "sphobjinv";
     rev = "7d21f6342702875da87392f2095ee546085ec97a";
@@ -14,19 +11,18 @@ python3.pkgs.buildPythonPackage rec {
   doCheck = false;
 
   checkPhase = ''
-                    pytest
-                    '';
+               pytest
+               '';
 
-  checkInputs = with python3Packages; [ pytest stdio-mgr dictdiffer ];
+  checkInputs = builtins.attrValues { inherit (pkgs.python3Packages) pytest stdio-mgr dictdiffer; };
   
-  propagatedBuildInputs = with python3Packages; [
-    sphinx
-    jsonschema
-  ];
+  propagatedBuildInputs = builtins.attrValues {
+    inherit (pkgs.python3Packages) sphinx jsonschema;
+  };
 
-  meta = with lib; {
-    description = "Manipulate and inspect Sphinx objects.inv files.";
-    homepage = https://github.com/bskinn/sphobjinv;
-    license = licenses.mit;
+  meta = {
+    pkgs.lib.description = "Manipulate and inspect Sphinx objects.inv files.";
+    pkgs.lib.homepage = https://github.com/bskinn/sphobjinv;
+    pkgs.lib.license = pkgs.lib.licenses.mit;
   };
 }

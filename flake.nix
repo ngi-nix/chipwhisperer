@@ -56,6 +56,7 @@
                     pkgs = import nixpkgs {
 					            inherit system;
 				            };
+                    
                     python = "python39";
 
                     # Generate a user-friendly version numer.
@@ -69,52 +70,52 @@
                           (n: generateVersion inputs."${n}-src".lastModifiedDate);
                     
                     # Define the packages
-                    stdio-mgr = with pkgs; (callPackage ./pkgs/stdio-mgr { }).overridePythonAttrs (oldAttrs: rec {
+                    stdio-mgr = (pkgs.callPackage ./pkgs/stdio-mgr { }).overridePythonAttrs (oldAttrs: {
                       src = stdio-mgr-src;
                       version = versions.stdio-mgr;
                     });
 
-                    pyright = with pkgs; (callPackage ./pkgs/pyright { }).overridePythonAttrs (oldAttrs : rec {
+                    pyright = (pkgs.callPackage ./pkgs/pyright { }).overridePythonAttrs (oldAttrs : {
                       src = pyright-src;
                       version = versions.pyright;
                     });
 
-                    nptyping = with pkgs; (callPackage ./pkgs/nptyping {
+                    nptyping = (pkgs.callPackage ./pkgs/nptyping {
                       pyright = pyright;
-                      stdio-mgr = stdio-mgr;}).overridePythonAttrs (oldAttrs : rec {
+                      stdio-mgr = stdio-mgr;}).overridePythonAttrs (oldAttrs : {
                         src = nptyping-src;
                         version = versions.nptyping;
                       });
 
-                    sphobjinv = with pkgs; (callPackage ./pkgs/sphobjinv { }).overridePythonAttrs (oldAttrs : rec {
+                    sphobjinv = (pkgs.callPackage ./pkgs/sphobjinv { }).overridePythonAttrs (oldAttrs : {
                       src = sphobjinv-src;
                       version = versions.sphobjinv;
                     });
 
-                    sphinxcontrib-images = with pkgs; (callPackage ./pkgs/sphinxcontrib-images {
-                      sphobjinv = sphobjinv;}).overridePythonAttrs (oldAttrs : rec {
+                    sphinxcontrib-images = (pkgs.callPackage ./pkgs/sphinxcontrib-images {
+                      sphobjinv = sphobjinv;}).overridePythonAttrs (oldAttrs : {
                         src = sphinxcontrib-images-src;
                         version = versions.sphinxcontrib-images;
                       });
 
-                    sphinx-autodoc-typehints = with pkgs; (callPackage ./pkgs/sphinx-autodoc-typehints {
+                    sphinx-autodoc-typehints = (pkgs.callPackage ./pkgs/sphinx-autodoc-typehints {
                       sphobjinv = sphobjinv;
-                      nptyping = nptyping;}).overridePythonAttrs (oldAttrs : rec {
+                      nptyping = nptyping;}).overridePythonAttrs (oldAttrs : {
                         src = sphinx-autodoc-typehints-src;
                         version = versions.sphinx-autodoc-typehints;
                       });
 
-                    chipwhisperer = with pkgs; (callPackage ./pkgs/chipwhisperer {
-                      libusb = libusb1;
+                    chipwhisperer = (pkgs.callPackage ./pkgs/chipwhisperer {
+                      # libusb = libusb1;
                       sphinxcontrib-images = sphinxcontrib-images;
-                      sphinx-autodoc-typehints = sphinx-autodoc-typehints;}).overridePythonAttrs (oldAttrs: rec {
+                      sphinx-autodoc-typehints = sphinx-autodoc-typehints;}).overridePythonAttrs (oldAttrs: {
                         src = chipwhisperer-src;
                         version = versions.chipwhisperer;
                       });
                     
-                  pythonEnv = pkgs.python39.withPackages (ps: [
-                    chipwhisperer
-                  ]);
+                  # pythonEnv = pkgs.python39.withPackages (ps: [
+                  #   chipwhisperer
+                  # ]);
                 in {
                   # The default package for 'nix build'. This makes sense if the
                   # flake provides only one package or there is a clear "main"

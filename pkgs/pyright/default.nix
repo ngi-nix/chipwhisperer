@@ -1,11 +1,8 @@
-{ fetchFromGitHub,
-  python3,
-  python3Packages,
-  lib, }:
-python3.pkgs.buildPythonPackage rec {
+{ pkgs }:
+pkgs.python3.pkgs.buildPythonPackage rec {
   version = "0.0.1";
   pname = "pyright";
-  src = fetchFromGitHub {
+  src = pkgs.fetchFromGitHub {
     owner = "RobertCraigie";
     repo = "pyright-python";
     rev = "6adecdd3ecf61c8fe5fa87df56ca278f94c0f14f";
@@ -18,16 +15,17 @@ python3.pkgs.buildPythonPackage rec {
              pytest
              '';
 
-  checkInputs = with python3Packages; [ pytest pytest-subprocess ];
+  checkInputs = builtins.attrValues {
+    inherit (pkgs.python3Packages) pytest pytest-subprocess;
+  };
   
-  propagatedBuildInputs = with python3Packages; [
-    nodeenv
-    typing-extensions
-  ];
+  propagatedBuildInputs = builtins.attrValues {
+    inherit (pkgs.python3Packages) nodeenv typing-extensions;
+  };
 
-  meta = with lib; {
-    description = "Pyright for Python is a Python command-line wrapper over pyright, a static type checker for Python.";
-    homepage = https://github.com/RobertCraigie/pyright-python;
-    license = licenses.mit;
+  meta = {
+    pkgs.lib.description = "Pyright for Python is a Python command-line wrapper over pyright, a static type checker for Python.";
+    pkgs.lib.homepage = https://github.com/RobertCraigie/pyright-python;
+    pkgs.lib.license = pkgs.lib.licenses.mit;
   };
 }
