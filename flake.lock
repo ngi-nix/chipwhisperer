@@ -19,16 +19,16 @@
     "chipwhisperer-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1658346069,
-        "narHash": "sha256-tLuokRPF8HF5CNas+T62EuW9XWT8gwP4jU6WkMdJ2xI=",
-        "owner": "S-Vaes",
-        "repo": "chipwhisperer-fork",
-        "rev": "90732b067a43f27d587212b325f4b1efb810d128",
+        "lastModified": 1658864384,
+        "narHash": "sha256-9cJAdaV722qoYovqGKAlXxJTh3auC2aYS7FdZOT6x1g=",
+        "owner": "newaetech",
+        "repo": "chipwhisperer",
+        "rev": "62474a627cf69111b0f275ac490069a1fd6f2a40",
         "type": "github"
       },
       "original": {
-        "owner": "S-Vaes",
-        "repo": "chipwhisperer-fork",
+        "owner": "newaetech",
+        "repo": "chipwhisperer",
         "type": "github"
       }
     },

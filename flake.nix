@@ -8,9 +8,7 @@
     
     # Upstream source tree(s).
     chipwhisperer-src = {
-      # TODO: Change to "github:newaetech/chipwhisperer" when PR is resolved
-      url = github:S-Vaes/chipwhisperer-fork;
-      # url = github:newaetech/chipwhisperer;
+      url = github:newaetech/chipwhisperer;
       flake = false;
     };
     chipwhisperer-jupyter-src = {
