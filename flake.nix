@@ -17,19 +17,19 @@
     };
     
     sphinxcontrib-images-src = {
-      url = github:sphinx-contrib/images;
+      url = github:sphinx-contrib/images/0.9.4;
       flake = false;
     };
     sphinx-autodoc-typehints-src = {
-      url = github:tox-dev/sphinx-autodoc-typehints;
+      url = github:tox-dev/sphinx-autodoc-typehints/1.19.1;
       flake = false;
     };
     sphobjinv-src = {
-      url = github:bskinn/sphobjinv;
+      url = github:bskinn/sphobjinv/v2.2.2;
       flake = false;
     };
     nptyping-src = {
-      url = github:ramonhagenaars/nptyping;
+      url = github:ramonhagenaars/nptyping/v2.2.0;
       flake = false;
     };
     stdio-mgr-src = {
@@ -37,7 +37,7 @@
       flake = false;
     };
     pyright-src = {
-      url = github:RobertCraigie/pyright-python;
+      url = github:RobertCraigie/pyright-python/v1.1.264;
       flake = false;
     };
   };
@@ -85,7 +85,7 @@
                         version = versions.nptyping;
                       });
 
-                    sphobjinv = (pkgs.callPackage ./pkgs/sphobjinv { }).overridePythonAttrs (oldAttrs : {
+                    sphobjinv = (pkgs.callPackage ./pkgs/sphobjinv { stdio-mgr = stdio-mgr; }).overridePythonAttrs (oldAttrs : {
                       src = sphobjinv-src;
                       version = versions.sphobjinv;
                     });

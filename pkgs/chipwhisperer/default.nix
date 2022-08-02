@@ -11,7 +11,8 @@ pkgs.python3.pkgs.buildPythonPackage rec {
     rev = "4bf6a266d717ad27cfef16065604b663dd6c2aef";
     sha256 = "1mnbw2crrj34bba4kadxmd5iqrjqyfr90hgd9fkwsafdzy53dmjh";
   };
-  doCheck = false;
+  
+  doCheck = false; # False because hardware needs to be connected to test/check
 
   checkInputs = builtins.attrValues { inherit (pkgs.python3Packages) pytest; };
   checkPhase = ''
