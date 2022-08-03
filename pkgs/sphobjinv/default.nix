@@ -1,4 +1,5 @@
-{ pkgs }:
+{ pkgs,
+stdio-mgr}:
 pkgs.python3.pkgs.buildPythonPackage rec {
   version = "0.0.1";
   pname = "sphobjinv";
@@ -8,13 +9,16 @@ pkgs.python3.pkgs.buildPythonPackage rec {
     rev = "7d21f6342702875da87392f2095ee546085ec97a";
     sha256 = "0x8934ys60pwqmnaqib7qw4429ab9sgy4509pvd2qpynv5kkmrk7";
   };
-  doCheck = false;
+  doCheck = false; # Fails for some reason?
 
   checkPhase = ''
                pytest
                '';
 
-  checkInputs = builtins.attrValues { inherit (pkgs.python3Packages) pytest stdio-mgr dictdiffer; };
+  checkInputs = [
+    pkgs.python3Packages.pytest
+    pkgs.python3Packages.dictdiffer
+    stdio-mgr ];
   
   propagatedBuildInputs = builtins.attrValues {
     inherit (pkgs.python3Packages) sphinx jsonschema;

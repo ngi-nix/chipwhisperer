@@ -9,16 +9,23 @@ pkgs.python3.pkgs.buildPythonPackage rec {
     rev = "260da2696fbf9172658d3c4363bfb50478b9068b";
     sha256 = "1fglzpc4x0hsqrkcji3d7n843rpl3prckdn9mp2iablgdg2h8xgf";
   };
-  doCheck = false;
+  doCheck = true;
 
   checkPhase = ''
                pytest
                '';
   
-  checkInputs = builtins.attrValues { inherit (pkgs.python3Packages) pytest typeguard pyright stdio-mgr mypy feedparser beartype; };
+  checkInputs =  [
+    pkgs.python3Packages.pytest
+    pkgs.python3Packages.typeguard
+    pkgs.python3Packages.mypy
+    pkgs.python3Packages.feedparser
+    pkgs.python3Packages.beartype
+    pyright
+    stdio-mgr ];
   
   propagatedBuildInputs = builtins.attrValues {
-    inherit (pkgs.python3Packages)  numpy typing-extensions;
+    inherit (pkgs.python3Packages) numpy typing-extensions;
   };
 
   meta = {

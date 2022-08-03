@@ -74,6 +74,7 @@
       },
       "original": {
         "owner": "ramonhagenaars",
+        "ref": "v2.2.0",
         "repo": "nptyping",
         "type": "github"
       }
@@ -81,15 +82,16 @@
     "pyright-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1658329196,
-        "narHash": "sha256-aXdAU+Ihe54fQ0mDT8YxFZ3oMwFQM5CRN2DFgAYhXl4=",
+        "lastModified": 1658884672,
+        "narHash": "sha256-y1aWhnBPFZIYUedcRftygXYLpo6uwgBShCDSzPhndY8=",
         "owner": "RobertCraigie",
         "repo": "pyright-python",
-        "rev": "6adecdd3ecf61c8fe5fa87df56ca278f94c0f14f",
+        "rev": "b4bd5226363c7637d2a484e776e3ffee00e39f0f",
         "type": "github"
       },
       "original": {
         "owner": "RobertCraigie",
+        "ref": "v1.1.264",
         "repo": "pyright-python",
         "type": "github"
       }
@@ -111,15 +113,16 @@
     "sphinx-autodoc-typehints-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1657563936,
-        "narHash": "sha256-0TTcNmCUJE9kENwRRqGes6nBItq1LIhgD45Y1VPdPwc=",
+        "lastModified": 1659295052,
+        "narHash": "sha256-N6UApdnICmN1TSNEBDc9SO4NTKc5TcbQLu4qxvgHNS4=",
         "owner": "tox-dev",
         "repo": "sphinx-autodoc-typehints",
-        "rev": "e0daa14b9d169bd5738e18b401c39a07ac5964f7",
+        "rev": "5bb2358e063e1f10a267d671d298866521fcc37f",
         "type": "github"
       },
       "original": {
         "owner": "tox-dev",
+        "ref": "1.19.1",
         "repo": "sphinx-autodoc-typehints",
         "type": "github"
       }
@@ -136,6 +139,7 @@
       },
       "original": {
         "owner": "sphinx-contrib",
+        "ref": "0.9.4",
         "repo": "images",
         "type": "github"
       }
@@ -143,15 +147,16 @@
     "sphobjinv-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1657673865,
-        "narHash": "sha256-Z+Y6Z9nWXyzavgkU4p9OSyVBCMdnRaxsxfwCoz0ZCXU=",
+        "lastModified": 1647978627,
+        "narHash": "sha256-yCL9WwNEgsjDVj7npcTjx+C11SxIcEDMYQOPJUN9qlc=",
         "owner": "bskinn",
         "repo": "sphobjinv",
-        "rev": "7d21f6342702875da87392f2095ee546085ec97a",
+        "rev": "1b2d5e39d93b72823504ddbb402ff582eda4b6c0",
         "type": "github"
       },
       "original": {
         "owner": "bskinn",
+        "ref": "v2.2.2",
         "repo": "sphobjinv",
         "type": "github"
       }
