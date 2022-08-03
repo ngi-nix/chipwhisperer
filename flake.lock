@@ -1,34 +1,34 @@
 {
   "nodes": {
-    "chipwhisperer-jupyter-src": {
+    "chipwhisperer": {
       "flake": false,
       "locked": {
-        "lastModified": 1657673304,
-        "narHash": "sha256-7DvSmqP5bS9DB4zm8yXGb7yzS5KtpXM9eIerjoE0C6w=",
+        "lastModified": 1659481178,
+        "narHash": "sha256-dKwCZ2fxL0DvOsJpwSbQQ75W+3HIM8tZEiiPgBCuB4Q=",
         "owner": "newaetech",
-        "repo": "chipwhisperer-jupyter",
-        "rev": "dc348287bf2ce30ec2bb3688e88f04276d6312d5",
+        "repo": "chipwhisperer",
+        "rev": "3009ec502fc9dd0de0fa0f3d5b7a6d85bcdcfb4e",
         "type": "github"
       },
       "original": {
         "owner": "newaetech",
-        "repo": "chipwhisperer-jupyter",
+        "repo": "chipwhisperer",
         "type": "github"
       }
     },
-    "chipwhisperer-src": {
+    "chipwhisperer-jupyter": {
       "flake": false,
       "locked": {
-        "lastModified": 1658864384,
-        "narHash": "sha256-9cJAdaV722qoYovqGKAlXxJTh3auC2aYS7FdZOT6x1g=",
+        "lastModified": 1658767691,
+        "narHash": "sha256-CgkMEk7MSzCQvw/2YJAWJs7b47DwzIkCUfreLhIRNkk=",
         "owner": "newaetech",
-        "repo": "chipwhisperer",
-        "rev": "62474a627cf69111b0f275ac490069a1fd6f2a40",
+        "repo": "chipwhisperer-jupyter",
+        "rev": "0755a2ef6940cfb1401094bbcb28f58e778af7d1",
         "type": "github"
       },
       "original": {
         "owner": "newaetech",
-        "repo": "chipwhisperer",
+        "repo": "chipwhisperer-jupyter",
         "type": "github"
       }
     },
@@ -62,7 +62,7 @@
         "type": "indirect"
       }
     },
-    "nptyping-src": {
+    "nptyping": {
       "flake": false,
       "locked": {
         "lastModified": 1656253739,
@@ -79,7 +79,7 @@
         "type": "github"
       }
     },
-    "pyright-src": {
+    "pyright": {
       "flake": false,
       "locked": {
         "lastModified": 1658884672,
@@ -98,19 +98,19 @@
     },
     "root": {
       "inputs": {
-        "chipwhisperer-jupyter-src": "chipwhisperer-jupyter-src",
-        "chipwhisperer-src": "chipwhisperer-src",
+        "chipwhisperer": "chipwhisperer",
+        "chipwhisperer-jupyter": "chipwhisperer-jupyter",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
-        "nptyping-src": "nptyping-src",
-        "pyright-src": "pyright-src",
-        "sphinx-autodoc-typehints-src": "sphinx-autodoc-typehints-src",
-        "sphinxcontrib-images-src": "sphinxcontrib-images-src",
-        "sphobjinv-src": "sphobjinv-src",
-        "stdio-mgr-src": "stdio-mgr-src"
+        "nptyping": "nptyping",
+        "pyright": "pyright",
+        "sphinx-autodoc-typehints": "sphinx-autodoc-typehints",
+        "sphinxcontrib-images": "sphinxcontrib-images",
+        "sphobjinv": "sphobjinv",
+        "stdio-mgr": "stdio-mgr"
       }
     },
-    "sphinx-autodoc-typehints-src": {
+    "sphinx-autodoc-typehints": {
       "flake": false,
       "locked": {
         "lastModified": 1659295052,
@@ -127,7 +127,7 @@
         "type": "github"
       }
     },
-    "sphinxcontrib-images-src": {
+    "sphinxcontrib-images": {
       "flake": false,
       "locked": {
         "lastModified": 1628485095,
@@ -144,7 +144,7 @@
         "type": "github"
       }
     },
-    "sphobjinv-src": {
+    "sphobjinv": {
       "flake": false,
       "locked": {
         "lastModified": 1647978627,
@@ -161,7 +161,7 @@
         "type": "github"
       }
     },
-    "stdio-mgr-src": {
+    "stdio-mgr": {
       "flake": false,
       "locked": {
         "lastModified": 1568642666,

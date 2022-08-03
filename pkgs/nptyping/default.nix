@@ -1,9 +1,9 @@
-{ pkgs,
+{ python3Packages, fetchFromGitHub,
   pyright, stdio-mgr }:
-pkgs.python3.pkgs.buildPythonPackage rec {
+python3Packages.buildPythonPackage rec {
   version = "0.0.1";
   pname = "nptyping";
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "ramonhagenaars";
     repo = "nptyping";
     rev = "260da2696fbf9172658d3c4363bfb50478b9068b";
@@ -16,21 +16,21 @@ pkgs.python3.pkgs.buildPythonPackage rec {
                '';
   
   checkInputs =  [
-    pkgs.python3Packages.pytest
-    pkgs.python3Packages.typeguard
-    pkgs.python3Packages.mypy
-    pkgs.python3Packages.feedparser
-    pkgs.python3Packages.beartype
+    python3Packages.pytest
+    python3Packages.typeguard
+    python3Packages.mypy
+    python3Packages.feedparser
+    python3Packages.beartype
     pyright
     stdio-mgr ];
   
   propagatedBuildInputs = builtins.attrValues {
-    inherit (pkgs.python3Packages) numpy typing-extensions;
+    inherit (python3Packages) numpy typing-extensions;
   };
 
   meta = {
-    pkgs.lib.description = "Extensive dynamic type checks for dtypes and shapes of arrays.";
-    pkgs.lib.homepage = https://github.com/ramonhagenaars/nptyping;
-    pkgs.lib.license = pkgs.lib.licenses.mit;
+    meta.description = "Extensive dynamic type checks for dtypes and shapes of arrays.";
+    meta.homepage = https://github.com/ramonhagenaars/nptyping;
+    meta.license = meta.licenses.mit;
   };
 }
