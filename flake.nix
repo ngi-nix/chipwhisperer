@@ -42,61 +42,58 @@
     };
   };
   outputs = { self, nixpkgs, flake-utils, ... }@inputs:
-    flake-utils.lib.eachDefaultSystem
-      (system:
+    let
+      # Generate a user-friendly version numer.
+      versions =
         let
-          pkgs = import nixpkgs {
-            inherit system;
-          };
-
-          python = "python39";
-
-          # Generate a user-friendly version numer.
-          versions =
-            let
-              generateVersion = builtins.substring 0 8;
-            in
-            nixpkgs.lib.genAttrs
-              [
-                "chipwhisperer"
-                "sphinxcontrib-images"
-                "sphinx-autodoc-typehints"
-                "sphobjinv"
-                "nptyping"
-                "stdio-mgr"
-                "pyright"
-              ]
-              (n: generateVersion inputs."${n}".lastModifiedDate);
-
-          # Define the overlays
-          overlays.all = import ./pkgs inputs versions;
-          overlays.default = (overlays.all null nixpkgs.legacyPackages.${system}).chipwhisperer;
+          generateVersion = builtins.substring 0 8;
         in
-        {
+          nixpkgs.lib.genAttrs
+            [
+              "chipwhisperer"
+              "sphinxcontrib-images"
+              "sphinx-autodoc-typehints"
+              "sphobjinv"
+              "nptyping"
+              "stdio-mgr"
+              "pyright"
+            ]
+            (n: generateVersion inputs."${n}".lastModifiedDate);
+      local_overlay = import ./pkgs inputs versions;
+
+      pkgsForSystem = system: import nixpkgs {
+        # if you have additional overlays, you may add them here
+        overlays = [
+          local_overlay # this should expose devShell
+        ];
+        inherit system;
+      };
+    in flake-utils.lib.eachDefaultSystem (system:
+      {
           # The default package for 'nix build'. This makes sense if the
           # flake provides only one package or there is a clear "main"
           # Provide some binary packages for selected system types.
           packages = flake-utils.lib.flattenTree {
-            default = (overlays.all null nixpkgs.legacyPackages.${system}).chipwhisperer;
-            chipwhisperer = (overlays.all null nixpkgs.legacyPackages.${system}).chipwhisperer;
-            sphinx-autodoc-typehints = (overlays.all null nixpkgs.legacyPackages.${system}).sphinx-autodoc-typehints;
-            sphinxcontrib-images = (overlays.all null nixpkgs.legacyPackages.${system}).sphinxcontrib-images;
-            sphobjinv = (overlays.all null nixpkgs.legacyPackages.${system}).sphobjinv;
-            nptyping = (overlays.all null nixpkgs.legacyPackages.${system}).nptyping;
-            stdio-mgr = (overlays.all null nixpkgs.legacyPackages.${system}).stdio-mgr;
-            pyright = (overlays.all null nixpkgs.legacyPackages.${system}).pyright;
+            default = (local_overlay null nixpkgs.legacyPackages.${system}).chipwhisperer;
+            chipwhisperer = (local_overlay null nixpkgs.legacyPackages.${system}).chipwhisperer;
+            sphinx-autodoc-typehints = (local_overlay null nixpkgs.legacyPackages.${system}).sphinx-autodoc-typehints;
+            sphinxcontrib-images = (local_overlay null nixpkgs.legacyPackages.${system}).sphinxcontrib-images;
+            sphobjinv = (local_overlay null nixpkgs.legacyPackages.${system}).sphobjinv;
+            nptyping = (local_overlay null nixpkgs.legacyPackages.${system}).nptyping;
+            stdio-mgr = (local_overlay null nixpkgs.legacyPackages.${system}).stdio-mgr;
+            pyright = (local_overlay null nixpkgs.legacyPackages.${system}).pyright;
           };
 
           # Default shell
-          devShells.default = pkgs.mkShell {
-            packages = [
-              (overlays.all null nixpkgs.legacyPackages.${system}).chipwhisperer
-            ];
-          };
+          # devShells.default = pkgs.mkShell {
+          #   packages = [
+          #     (local_overlay null nixpkgs.legacyPackages.${system}).chipwhisperer
+          #   ];
+          # };
 
-          overlays = final: prev: {
-            default = (overlays.default final nixpkgs.legacyPackages.${system});
-            all = (overlays.all final nixpkgs.legacyPackages.${system});
-          };
+          # overlays = final: prev: {
+          #   default = (overlays.default final nixpkgs.legacyPackages.${system});
+          #   all = (overlays.all final nixpkgs.legacyPackages.${system});
+          # };
         });
 }

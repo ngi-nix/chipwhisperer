@@ -46,4 +46,6 @@ inputs: versions: _: final: rec {
     src = inputs.chipwhisperer;
     version = versions.chipwhisperer;
   });
+
+  devShells.default = final.callPackage ./shell.nix { };
 }
