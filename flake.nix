@@ -59,6 +59,7 @@
               "pyright"
             ]
             (n: generateVersion inputs."${n}".lastModifiedDate);
+      
       local_overlay = import ./pkgs inputs versions;
 
       pkgsForSystem = system: import nixpkgs {
@@ -68,32 +69,36 @@
         ];
         inherit system;
       };
-    in flake-utils.lib.eachDefaultSystem (system:
-      {
-          # The default package for 'nix build'. This makes sense if the
-          # flake provides only one package or there is a clear "main"
-          # Provide some binary packages for selected system types.
-          packages = flake-utils.lib.flattenTree {
-            default = (local_overlay null nixpkgs.legacyPackages.${system}).chipwhisperer;
-            chipwhisperer = (local_overlay null nixpkgs.legacyPackages.${system}).chipwhisperer;
-            sphinx-autodoc-typehints = (local_overlay null nixpkgs.legacyPackages.${system}).sphinx-autodoc-typehints;
-            sphinxcontrib-images = (local_overlay null nixpkgs.legacyPackages.${system}).sphinxcontrib-images;
-            sphobjinv = (local_overlay null nixpkgs.legacyPackages.${system}).sphobjinv;
-            nptyping = (local_overlay null nixpkgs.legacyPackages.${system}).nptyping;
-            stdio-mgr = (local_overlay null nixpkgs.legacyPackages.${system}).stdio-mgr;
-            pyright = (local_overlay null nixpkgs.legacyPackages.${system}).pyright;
-          };
+    in flake-utils.lib.eachDefaultSystem (system: rec {
 
-          # Default shell
-          # devShells.default = pkgs.mkShell {
-          #   packages = [
-          #     (local_overlay null nixpkgs.legacyPackages.${system}).chipwhisperer
-          #   ];
-          # };
+      # The default package for 'nix build'. This makes sense if the
+      # flake provides only one package or there is a clear "main"
+      # Provide some binary packages for selected system types.
+      legacyPackages = pkgsForSystem system;
+      
+      packages = flake-utils.lib.flattenTree {
+        stdio-mgr = legacyPackages.cw.stdio-mgr;
+        pyright = legacyPackages.cw.pyright;
+        nptyping = legacyPackages.cw.nptyping;
+        sphobjinv = legacyPackages.cw.sphobjinv;
+        sphinxcontrib-images = legacyPackages.cw.sphinxcontrib-images;
+        sphinx-autodoc-typehints = legacyPackages.cw.sphinx-autodoc-typehints;
+        chipwhisperer = legacyPackages.cw.chipwhisperer;
+        default = legacyPackages.default;
+      };
 
-          # overlays = final: prev: {
-          #   default = (overlays.default final nixpkgs.legacyPackages.${system});
-          #   all = (overlays.all final nixpkgs.legacyPackages.${system});
-          # };
-        });
+      # Default shell
+      devShells.default = legacyPackages.mkShell {
+        packages = [
+          packages.default
+        ];
+      };
+    }) // {
+      # Non-system
+      # overlay = local_overlay;
+      overlays = {
+        default = final: prev: local_overlay.default;
+        all = final: prev: local_overlay.cw;
+      };
+    };
 }

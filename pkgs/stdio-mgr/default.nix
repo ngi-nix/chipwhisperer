@@ -1,4 +1,4 @@
-{ python3Packages, fetchFromGitHub }:
+{ python3Packages, fetchFromGitHub, maintainers, lib }:
 python3Packages.buildPythonPackage rec {
   version = "0.0.1";
   pname = "stdio-mgr";
@@ -20,8 +20,9 @@ python3Packages.buildPythonPackage rec {
   propagatedBuildInputs = builtins.attrValues { inherit (python3Packages) numpy typing-extensions; };
 
   meta = {
-    meta.description = "Context manager for mocking/wrapping stdin/stdout/stderr.";
-    meta.homepage = https://github.com/bskinn/stdio-mgr;
-    meta.license = meta.licenses.mit;
+    description = "Context manager for mocking/wrapping stdin/stdout/stderr.";
+    homepage = https://github.com/bskinn/stdio-mgr;
+    license = lib.licenses.mit;
+    maintainers = [ maintainers.svaes ];
   };
 }

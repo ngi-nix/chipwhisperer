@@ -1,4 +1,4 @@
-{ python3Packages, fetchFromGitHub, pkgs,
+{ python3Packages, fetchFromGitHub, pkgs, maintainers, lib,
   sphobjinv,
   nptyping }:
 python3Packages.buildPythonPackage rec {
@@ -26,8 +26,9 @@ python3Packages.buildPythonPackage rec {
   };
   
   meta = {
-    meta.description = "This extension allows you to use Python 3 annotations for documenting acceptable argument types and return value types of functions.";
-    meta.homepage = https://github.com/tox-dev/sphinx-autodoc-typehints;
-    meta.license = meta.licenses.mit;
+    description = "This extension allows you to use Python 3 annotations for documenting acceptable argument types and return value types of functions.";
+    homepage = https://github.com/tox-dev/sphinx-autodoc-typehints;
+    license = lib.licenses.mit;
+    maintainers = [ maintainers.svaes ];
   };
 }

@@ -1,4 +1,4 @@
-{ python3Packages, fetchFromGitHub }:
+{ python3Packages, fetchFromGitHub, maintainers, lib }:
 python3Packages.buildPythonPackage rec {
   version = "0.0.1";
   pname = "pyright";
@@ -24,8 +24,9 @@ python3Packages.buildPythonPackage rec {
   };
 
   meta = {
-    meta.description = "Pyright for Python is a Python command-line wrapper over pyright, a static type checker for Python.";
-    meta.homepage = https://github.com/RobertCraigie/pyright-python;
-    meta.license = meta.licenses.mit;
+    description = "Pyright for Python is a Python command-line wrapper over pyright, a static type checker for Python.";
+    homepage = https://github.com/RobertCraigie/pyright-python;
+    license = lib.licenses.mit;
+    maintainers = [ maintainers.svaes ];
   };
 }

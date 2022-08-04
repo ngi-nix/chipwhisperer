@@ -1,4 +1,4 @@
-{ python3Packages, fetchFromGitHub,
+{ python3Packages, fetchFromGitHub, maintainers, lib,
   libusb1,
   sphinxcontrib-images,
   sphinx-autodoc-typehints }:
@@ -58,8 +58,9 @@ python3Packages.buildPythonPackage rec {
   ];
 
   meta = {
-    meta.description = "Open source toolchain dedicated to hardware security research.";
-    meta.homepage = https://github.com/newaetech/chipwhisperer;
-    meta.license = meta.licenses.gpl2Plus;
+    description = "Open source toolchain dedicated to hardware security research.";
+    homepage = https://github.com/newaetech/chipwhisperer;
+    license = lib.licenses.gpl2Plus;
+    maintainers = [ maintainers.svaes ];
   };
 }

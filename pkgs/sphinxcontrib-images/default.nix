@@ -1,4 +1,4 @@
-{ python3Packages, fetchFromGitHub,
+{ python3Packages, fetchFromGitHub, maintainers, lib,
   sphobjinv }:
 python3Packages.buildPythonPackage rec {
   version = "0.0.1";
@@ -23,8 +23,9 @@ python3Packages.buildPythonPackage rec {
   ];
 
   meta = {
-    meta.description = "Easy thumbnails in Sphinx documentation (focused on HTML).";
-    meta.homepage = https://github.com/sphinx-contrib/images;
-    meta.license = meta.licenses.asl20;
+    description = "Easy thumbnails in Sphinx documentation (focused on HTML).";
+    homepage = https://github.com/sphinx-contrib/images;
+    license = lib.licenses.asl20;
+    maintainers = [ maintainers.svaes ];
   };
 }

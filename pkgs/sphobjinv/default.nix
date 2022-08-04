@@ -1,4 +1,4 @@
-{ python3Packages, fetchFromGitHub,
+{ python3Packages, fetchFromGitHub, maintainers, lib,
   stdio-mgr}:
 python3Packages.buildPythonPackage rec {
   version = "0.0.1";
@@ -25,8 +25,9 @@ python3Packages.buildPythonPackage rec {
   };
 
   meta = {
-    meta.description = "Manipulate and inspect Sphinx objects.inv files.";
-    meta.homepage = https://github.com/bskinn/sphobjinv;
-    meta.license = meta.licenses.mit;
+    description = "Manipulate and inspect Sphinx objects.inv files.";
+    homepage = https://github.com/bskinn/sphobjinv;
+    license = lib.licenses.mit;
+    maintainers = [ maintainers.svaes ];
   };
 }

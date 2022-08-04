@@ -1,4 +1,4 @@
-{ python3Packages, fetchFromGitHub,
+{ python3Packages, fetchFromGitHub, maintainers, lib,
   pyright, stdio-mgr }:
 python3Packages.buildPythonPackage rec {
   version = "0.0.1";
@@ -29,8 +29,9 @@ python3Packages.buildPythonPackage rec {
   };
 
   meta = {
-    meta.description = "Extensive dynamic type checks for dtypes and shapes of arrays.";
-    meta.homepage = https://github.com/ramonhagenaars/nptyping;
-    meta.license = meta.licenses.mit;
+    description = "Extensive dynamic type checks for dtypes and shapes of arrays.";
+    homepage = https://github.com/ramonhagenaars/nptyping;
+    license = lib.licenses.mit;
+    maintainers = [ maintainers.svaes ];
   };
 }

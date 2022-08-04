@@ -1,6 +1,6 @@
-{ mkShell, local_overlay }:
-mkShell {
+{ legacyPackages }:
+legacyPackages.mkShell {
   packages = [
-    (local_overlay null nixpkgs.legacyPackages.${system}).chipwhisperer
+    legacyPackages.chipwhisperer
   ];
 }
