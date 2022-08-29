@@ -1,9 +1,9 @@
-{ pkgs,
+{ python3Packages, fetchFromGitHub, maintainers, lib,
   sphobjinv }:
-pkgs.python3.pkgs.buildPythonPackage rec {
+python3Packages.buildPythonPackage rec {
   version = "0.0.1";
   pname = "sphinxcontrib-images";
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "sphinx-contrib";
     repo = "images";
     rev = "b5747fd3b66a34a8c8c1cee4af4baa8e72286849";
@@ -15,16 +15,17 @@ pkgs.python3.pkgs.buildPythonPackage rec {
                pytest
                '';
 
-  checkInputs = [ pkgs.python3Packages.pytest ];
+  checkInputs = [ python3Packages.pytest ];
   
   propagatedBuildInputs = [
     sphobjinv
-    pkgs.python3Packages.sphinx
+    python3Packages.sphinx
   ];
 
   meta = {
-    pkgs.lib.description = "Easy thumbnails in Sphinx documentation (focused on HTML).";
-    pkgs.lib.homepage = https://github.com/sphinx-contrib/images;
-    pkgs.lib.license = pkgs.lib.licenses.asl20;
+    description = "Easy thumbnails in Sphinx documentation (focused on HTML).";
+    homepage = https://github.com/sphinx-contrib/images;
+    license = lib.licenses.asl20;
+    maintainers = [ maintainers.svaes ];
   };
 }

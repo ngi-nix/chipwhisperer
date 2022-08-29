@@ -1,8 +1,8 @@
-{ pkgs }:
-pkgs.python3.pkgs.buildPythonPackage rec {
+{ python3Packages, fetchFromGitHub, maintainers, lib }:
+python3Packages.buildPythonPackage rec {
   version = "0.0.1";
   pname = "stdio-mgr";
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "bskinn";
     repo = "stdi-_mgr";
     rev = "9bf5a93d4621a3c1973c7ac16b257842e0c01aa0";
@@ -15,15 +15,14 @@ pkgs.python3.pkgs.buildPythonPackage rec {
                pytest
                '';
 
-  checkInputs = builtins.attrValues { inherit (pkgs.python3Packages) pytest; };
+  checkInputs = builtins.attrValues { inherit (python3Packages) pytest; };
   
-  propagatedBuildInputs =  builtins.attrValues {
-    inherit (pkgs.python3Packages) numpy typing-extensions;
-  };
+  propagatedBuildInputs = builtins.attrValues { inherit (python3Packages) numpy typing-extensions; };
 
   meta = {
-    pkgs.lib.description = "Context manager for mocking/wrapping stdin/stdout/stderr.";
-    pkgs.lib.homepage = https://github.com/bskinn/stdio-mgr;
-    pkgs.lib.license = pkgs.lib.licenses.mit;
+    description = "Context manager for mocking/wrapping stdin/stdout/stderr.";
+    homepage = https://github.com/bskinn/stdio-mgr;
+    license = lib.licenses.mit;
+    maintainers = [ maintainers.svaes ];
   };
 }

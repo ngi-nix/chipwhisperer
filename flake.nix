@@ -5,145 +5,100 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.05";
     flake-utils.url = "github:numtide/flake-utils";
-    
+
     # Upstream source tree(s).
-    chipwhisperer-src = {
+    chipwhisperer = {
       url = github:newaetech/chipwhisperer;
       flake = false;
     };
-    chipwhisperer-jupyter-src = {
+    chipwhisperer-jupyter = {
       url = github:newaetech/chipwhisperer-jupyter;
       flake = false;
     };
-    
-    sphinxcontrib-images-src = {
+
+    sphinxcontrib-images = {
       url = github:sphinx-contrib/images/0.9.4;
       flake = false;
     };
-    sphinx-autodoc-typehints-src = {
+    sphinx-autodoc-typehints = {
       url = github:tox-dev/sphinx-autodoc-typehints/1.19.1;
       flake = false;
     };
-    sphobjinv-src = {
+    sphobjinv = {
       url = github:bskinn/sphobjinv/v2.2.2;
       flake = false;
     };
-    nptyping-src = {
+    nptyping = {
       url = github:ramonhagenaars/nptyping/v2.2.0;
       flake = false;
     };
-    stdio-mgr-src = {
+    stdio-mgr = {
       url = github:bskinn/stdio-mgr;
       flake = false;
     };
-    pyright-src = {
+    pyright = {
       url = github:RobertCraigie/pyright-python/v1.1.264;
       flake = false;
     };
   };
-  outputs = { self, nixpkgs, flake-utils,
-              chipwhisperer-src, chipwhisperer-jupyter-src,
-              sphinxcontrib-images-src,
-              sphinx-autodoc-typehints-src,
-              sphobjinv-src,
-              nptyping-src,
-              stdio-mgr-src,
-              pyright-src}@inputs:
-                flake-utils.lib.eachDefaultSystem (system:
-                  let
-                    pkgs = import nixpkgs {
-					            inherit system;
-				            };
-                    
-                    python = "python39";
+  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
+    let
+      # Generate a user-friendly version numer.
+      versions =
+        let
+          generateVersion = builtins.substring 0 8;
+        in
+          nixpkgs.lib.genAttrs
+            [
+              "chipwhisperer"
+              "sphinxcontrib-images"
+              "sphinx-autodoc-typehints"
+              "sphobjinv"
+              "nptyping"
+              "stdio-mgr"
+              "pyright"
+            ]
+            (n: generateVersion inputs."${n}".lastModifiedDate);
+      
+      local_overlay = import ./pkgs inputs versions;
 
-                    # Generate a user-friendly version numer.
-                    versions =
-                      let
-                        generateVersion = builtins.substring 0 8;
-                      in
-                        nixpkgs.lib.genAttrs
-                          [ "chipwhisperer" "sphinxcontrib-images" "sphinx-autodoc-typehints"
-                            "sphobjinv" "nptyping" "stdio-mgr" "pyright"]
-                          (n: generateVersion inputs."${n}-src".lastModifiedDate);
-                    
-                    # Define the packages
-                    stdio-mgr = (pkgs.callPackage ./pkgs/stdio-mgr { }).overridePythonAttrs (oldAttrs: {
-                      src = stdio-mgr-src;
-                      version = versions.stdio-mgr;
-                    });
+      pkgsForSystem = system: import nixpkgs {
+        # if you have additional overlays, you may add them here
+        overlays = [
+          local_overlay # this should expose devShell
+        ];
+        inherit system;
+      };
+    in flake-utils.lib.eachDefaultSystem (system: rec {
 
-                    pyright = (pkgs.callPackage ./pkgs/pyright { }).overridePythonAttrs (oldAttrs : {
-                      src = pyright-src;
-                      version = versions.pyright;
-                    });
+      # The default package for 'nix build'. This makes sense if the
+      # flake provides only one package or there is a clear "main"
+      # Provide some binary packages for selected system types.
+      legacyPackages = pkgsForSystem system;
+      
+      packages = flake-utils.lib.flattenTree {
+        stdio-mgr = legacyPackages.cw.stdio-mgr;
+        pyright = legacyPackages.cw.pyright;
+        nptyping = legacyPackages.cw.nptyping;
+        sphobjinv = legacyPackages.cw.sphobjinv;
+        sphinxcontrib-images = legacyPackages.cw.sphinxcontrib-images;
+        sphinx-autodoc-typehints = legacyPackages.cw.sphinx-autodoc-typehints;
+        chipwhisperer = legacyPackages.cw.chipwhisperer;
+        default = legacyPackages.default;
+      };
 
-                    nptyping = (pkgs.callPackage ./pkgs/nptyping {
-                      pyright = pyright;
-                      stdio-mgr = stdio-mgr;}).overridePythonAttrs (oldAttrs : {
-                        src = nptyping-src;
-                        version = versions.nptyping;
-                      });
-
-                    sphobjinv = (pkgs.callPackage ./pkgs/sphobjinv { stdio-mgr = stdio-mgr; }).overridePythonAttrs (oldAttrs : {
-                      src = sphobjinv-src;
-                      version = versions.sphobjinv;
-                    });
-
-                    sphinxcontrib-images = (pkgs.callPackage ./pkgs/sphinxcontrib-images {
-                      sphobjinv = sphobjinv;}).overridePythonAttrs (oldAttrs : {
-                        src = sphinxcontrib-images-src;
-                        version = versions.sphinxcontrib-images;
-                      });
-
-                    sphinx-autodoc-typehints = (pkgs.callPackage ./pkgs/sphinx-autodoc-typehints {
-                      sphobjinv = sphobjinv;
-                      nptyping = nptyping;}).overridePythonAttrs (oldAttrs : {
-                        src = sphinx-autodoc-typehints-src;
-                        version = versions.sphinx-autodoc-typehints;
-                      });
-
-                    chipwhisperer = (pkgs.callPackage ./pkgs/chipwhisperer {
-                      # libusb = libusb1;
-                      sphinxcontrib-images = sphinxcontrib-images;
-                      sphinx-autodoc-typehints = sphinx-autodoc-typehints;}).overridePythonAttrs (oldAttrs: {
-                        src = chipwhisperer-src;
-                        version = versions.chipwhisperer;
-                      });
-                    
-                  # pythonEnv = pkgs.python39.withPackages (ps: [
-                  #   chipwhisperer
-                  # ]);
-                in {
-                  # The default package for 'nix build'. This makes sense if the
-                  # flake provides only one package or there is a clear "main"
-                  # Provide some binary packages for selected system types.
-                  packages = flake-utils.lib.flattenTree {
-                    default = chipwhisperer;
-                    chipwhisperer = chipwhisperer;
-                    sphinx-autodoc-typehints = sphinx-autodoc-typehints;
-                    sphinxcontrib-images = sphinxcontrib-images;
-                    sphobjinv = sphobjinv;
-                    nptyping = nptyping;
-                    stdio-mgr = stdio-mgr;
-                    pyright = pyright;
-                  };
-
-                  # Default shell
-                  devShells.default = pkgs.mkShell {
-                      buildInputs = [
-                        chipwhisperer
-                      ];
-                      # (pkgs.python39.withPackages (p: with p; [ chipwhisperer ]))
-                  };
-                }) // {
-                  overlays = {
-                    default = final: prev: {
-                      inherit (self.packages) default;
-                    };
-                    all = final: prev: {
-                      inherit (self.packages) chipwhisperer sphinx-autodoc-typehints sphinxcontrib-images sphobjinv nptyping pyright stdio-mgr;
-                    };
-                  };
-                };
+      # Default shell
+      devShells.default = legacyPackages.mkShell {
+        packages = [
+          packages.default
+        ];
+      };
+    }) // {
+      # Non-system
+      # overlay = local_overlay;
+      overlays = {
+        default = final: prev: local_overlay.default;
+        all = final: prev: local_overlay.cw;
+      };
+    };
 }

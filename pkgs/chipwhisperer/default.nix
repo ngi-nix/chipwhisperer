@@ -1,11 +1,11 @@
-{ pkgs,
-  # libusb,
+{ python3Packages, fetchFromGitHub, maintainers, lib,
+  libusb1,
   sphinxcontrib-images,
   sphinx-autodoc-typehints }:
-pkgs.python3.pkgs.buildPythonPackage rec {
+python3Packages.buildPythonPackage rec {
   version = "0.0.1";
   pname = "chipwhisperer";
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "newaetech";
     repo = "chipwhisperer";
     rev = "4bf6a266d717ad27cfef16065604b663dd6c2aef";
@@ -14,7 +14,7 @@ pkgs.python3.pkgs.buildPythonPackage rec {
   
   doCheck = false; # False because hardware needs to be connected to test/check
 
-  checkInputs = builtins.attrValues { inherit (pkgs.python3Packages) pytest; };
+  checkInputs = builtins.attrValues { inherit (python3Packages) pytest; };
   checkPhase = ''
                export HOME="$(mktemp -d)"
                python3 -m pytest ./tests/
@@ -29,43 +29,38 @@ pkgs.python3.pkgs.buildPythonPackage rec {
                     cp hardware/50-newae.rules $out/lib/udev/rules.d
                     '';
   
-  # installPhase = ''
-  # mkdir -p $out/lib/udev/rules.d
-  # cp hardware/50-newae.rules $out/lib/udev/rules.d
-  # pip install *.whl
-  # '';
-  
   buildInputs = [
-    pkgs.libusb1
+    libusb1
   ];
   
   propagatedBuildInputs = [
-    pkgs.python3Packages.libusb1
-    pkgs.python3Packages.configobj
-    pkgs.python3Packages.iso8601
-    pkgs.python3Packages.numpy
-    pkgs.python3Packages.pycryptodome
-    pkgs.python3Packages.pyparsing
-    pkgs.python3Packages.python-dateutil
-    pkgs.python3Packages.pytz
-    pkgs.python3Packages.pyusb
-    pkgs.python3Packages.scipy
-    pkgs.python3Packages.sphinx
-    pkgs.python3Packages.sphinx_rtd_theme
-    pkgs.python3Packages.pyserial
-    pkgs.python3Packages.fastdtw
-    pkgs.python3Packages.cython
-    pkgs.python3Packages.pypandoc
-    pkgs.python3Packages.tqdm
-    pkgs.python3Packages.ipython
-    pkgs.python3Packages.ecpy
+    python3Packages.libusb1
+    python3Packages.configobj
+    python3Packages.iso8601
+    python3Packages.numpy
+    python3Packages.pycryptodome
+    python3Packages.pyparsing
+    python3Packages.python-dateutil
+    python3Packages.pytz
+    python3Packages.pyusb
+    python3Packages.scipy
+    python3Packages.sphinx
+    python3Packages.sphinx_rtd_theme
+    python3Packages.pyserial
+    python3Packages.fastdtw
+    python3Packages.cython
+    python3Packages.pypandoc
+    python3Packages.tqdm
+    python3Packages.ipython
+    python3Packages.ecpy
     sphinxcontrib-images
     sphinx-autodoc-typehints
   ];
 
   meta = {
-    pkgs.lib.description = "Open source toolchain dedicated to hardware security research.";
-    pkgs.lib.homepage = https://github.com/newaetech/chipwhisperer;
-    pkgs.lib.license = pkgs.lib.licenses.gpl2Plus;
+    description = "Open source toolchain dedicated to hardware security research.";
+    homepage = https://github.com/newaetech/chipwhisperer;
+    license = lib.licenses.gpl2Plus;
+    maintainers = [ maintainers.svaes ];
   };
 }
